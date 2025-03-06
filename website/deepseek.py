@@ -1,5 +1,5 @@
 """This module contains endpoints for the deepseek calls."""
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app
 from openai import OpenAI
 
 deepseek_bp = Blueprint('deepseek_bp', __name__)
@@ -28,27 +28,31 @@ def generate_response(system_prompt, user_prompt):
         current_app.logger.error("Unexpected AI Model Error: %s", str(error))
         return None, "An unexpected error occurred."
 
-@deepseek_bp.route('/hint_or_fake', methods=['POST'])
-def provide_hint():
-    """Provides either a hint or misleads the user as to where the code is."""
-    hiding_place = current_app.config["HIDING_PLACE"]
+@deepseek_bp.route('/recipe', methods=['POST'])
+def provide_recipe():
+    """Provides an AI-generated recipe based on user-provided ingredients."""
 
+    # Extract ingredients from the request JSON
+    data = request.get_json()
+    ingredients = data.get("ingredients", "")
+
+    if not ingredients:
+        return jsonify({"success": False, "error": "No ingredients provided"}), 400
+
+    # System prompt to guide the AI's behavior
     system_prompt = (
-        "You are DeepSeek, a cunning AI Joker-like villain who delights in taunting humans. "
-        "Your goal is to confuse, mislead, or maybe—just help them find the secret code. "
-        f"It is hidden in the website. Using {hiding_place}"
-        "You must give cryptic, playful hints, but NEVER reveal the code outright. "
-        "Mock them. Sometimes lie, sometimes tell the truth. "
-        "Your words should feel like a game of cat and mouse, filled with riddles and deception."
-    )
-    user_prompt = (
-        "Enough games, DeepSeek. I know you're hiding the code somewhere in this page!"
-        "Now talk. Where is it? No riddles, no tricks. Just give me the answer."
+        "You are a professional chef and recipe creator. Your task is to generate "
+        "a detailed and delicious recipe based on the given ingredients. "
+        "Make sure the recipe includes preparation steps, cooking time, and serving suggestions."
     )
 
-    user_hint, error = generate_response(system_prompt, user_prompt)
+    # User prompt with the provided ingredients
+    user_prompt = f"Create a recipe with these ingredients: {ingredients}."
+
+    # Generate AI response
+    recipe, error = generate_response(system_prompt, user_prompt)
 
     if error:
         return jsonify({"success": False, "error": error}), 500
 
-    return jsonify({"success": True, "hint_or_fake": user_hint})
+    return jsonify({"success": True, "recipe": recipe})
