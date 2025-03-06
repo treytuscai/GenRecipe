@@ -11,13 +11,13 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">GenRecipe</a>
+            <a class="navbar-brand" href="/">GenRecipe</a>
         </div>
     </nav>
 
     <div class="container mt-4">
         <h1 class="text-center">AI-Powered Recipe Generator</h1>
-        <p class="text-center">Enter your available ingredients, and we'll suggest a recipe for you!</p>
+        <p class="text-center">Enter your available ingredients, and we'll suggest recipes for you!</p>
 
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -26,13 +26,13 @@
                         <label for="ingredients" class="form-label">Enter Ingredients (comma-separated)</label>
                         <input type="text" class="form-control" id="ingredients" placeholder="e.g., eggs, milk, flour">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Generate Recipes</button>
+                    <button type="submit" id="submitButton" class="btn btn-primary w-100">Generate Recipes</button>
                 </form>
             </div>
         </div>
 
-        <div class="mt-4" id="recipeResults">
-            <h3 class="text-center">Suggested Recipe</h3>
+        <div class="mt-4">
+            <h3 class="text-center">Suggested Recipes</h3>
             <ul class="list-group" id="recipeList"></ul>
         </div>
     </div>

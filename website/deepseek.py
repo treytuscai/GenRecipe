@@ -39,15 +39,12 @@ def provide_recipe():
     if not ingredients:
         return jsonify({"success": False, "error": "No ingredients provided"}), 400
 
-    # System prompt to guide the AI's behavior
     system_prompt = (
         "You are a professional chef and recipe creator. Your task is to generate "
-        "a detailed and delicious recipe based on the given ingredients. "
-        "Make sure the recipe includes preparation steps, cooking time, and serving suggestions."
+        "detailed and delicious recipes based on the given ingredients. "
     )
 
-    # User prompt with the provided ingredients
-    user_prompt = f"Create a recipe with these ingredients: {ingredients}."
+    user_prompt = f"Create some recipes with these ingredients: {ingredients}."
 
     # Generate AI response
     recipe, error = generate_response(system_prompt, user_prompt)
