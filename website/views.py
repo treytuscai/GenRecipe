@@ -1,7 +1,5 @@
-"""This module contains endpoints for the deepseek.exe app."""
-import os
-import random
-from flask import Blueprint, render_template, current_app, jsonify
+"""This module contains endpoints for the genrecipe app."""
+from flask import Blueprint, render_template
 
 # Create a blueprint
 main_blueprint = Blueprint('main', __name__)
