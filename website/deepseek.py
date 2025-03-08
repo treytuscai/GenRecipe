@@ -4,17 +4,13 @@ from openai import OpenAI
 
 deepseek_bp = Blueprint('deepseek_bp', __name__)
 
-_openai_client = None  # Global variable to store the client
-
 def get_openai_client():
     """Retrieves OpenAI client using the API key from Flask config."""
-    global _openai_client
-    if _openai_client is None:
-        api_key = current_app.config.get("OPENAI_API_KEY")
-        if not api_key:
-            raise ValueError("Missing OpenAI API Key")
-        _openai_client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
-    return _openai_client
+    api_key = current_app.config.get("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("Missing OpenAI API Key")
+    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+    return client
 
 def generate_response(system_prompt, user_prompt):
     """Helper function to generate AI responses using DeepSeek Chat API."""
